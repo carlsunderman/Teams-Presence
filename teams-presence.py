@@ -115,6 +115,7 @@ parser.add_argument("--version", "-v", help="Prints the version", action="store_
 parser.add_argument("--refresh", "-r", help="Sets the refresh value in seconds", type=int)
 parser.add_argument("--brightness", "-b", help="Sets the brightness of the LED display. Value must be between 0.1 and 1", type=int)
 parser.add_argument("--afterwork", "-aw", help="Check for presence after working hours", action="store_true")
+parser.add_argument("--weekend", "-aw", help="Check for presence during the weekend", action="store_true")
 parser.add_argument("--nopulse", "-np", help="Disables pulsing, if after work hours", action="store_true")
 
 args = parser.parse_args()
@@ -141,6 +142,9 @@ if args.brightness:
 
 if args.afterwork:
 	printwarning("Option: Set after work to true")
+
+if args.weekend:
+	printwarning("Option: Set weekend to true")
 
 #Handles Ctrl+C
 def handler(signal_received, frame):
@@ -435,6 +439,9 @@ def printHeader():
 
 # Check for Weekend
 def check_weekend():
+	if args.weekend:
+		return
+
 	now = datetime.now()
 	while now.strftime("%A") not in workdays:
 		printHeader()
@@ -602,6 +609,9 @@ if __name__ == '__main__':
 
 		if args.afterwork:
 			printwarning("Option:\t\t\t" + "Set display after work to True")
+		
+		if args.weekend:
+			printwarning("Option:\t\t\t" + "Set display weekend to True")
 
 		print("User:\t\t\t" + fullname)
 
